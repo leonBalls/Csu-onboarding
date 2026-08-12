@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSU Onboarding - UMass Boston</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .slide {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            width: 90%;
+            max-width: 1000px;
+            height: 600px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent);
+            pointer-events: none;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .slide-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        p, li {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        ul {
+            text-align: left;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            list-style-position: inside;
+        }
+
+        .highlight {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px 30px;
+            border-radius: 10px;
+            border-left: 5px solid #FFD700;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.2em;
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            color: white;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin: 0 10px;
+        }
+
+        .salary-box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #FFD700;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .column {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 3px solid #FFD700;
+        }
+
+        .column h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .benefit-box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+        }
+
+        .benefit-box h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .benefit-box ul {
+            margin: 0;
+        }
+
+        .benefit-box li {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .full-width-benefit {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+            margin: 12px 0;
+            text-align: left;
+        }
+
+        .full-width-benefit h3 {
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .full-width-benefit p {
+            font-size: 1.1em;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">🎓 UMass Boston CSU</div>
+    <div class="slide-counter"><span id="current-slide">1</span> / <span id="total-slides">15</span></div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="slide-content">
+                <h1>🎉 Welcome to CSU</h1>
+                <p style="font-size: 1.8em; margin-bottom: 40px;">Classified Staff Union</p>
+                <p>UMass Boston Onboarding</p>
+                <p style="margin-top: 40px; opacity: 0.9;">Let's learn about your benefits and rights</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: What is CSU? -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>What is the CSU?</h2>
+                <p style="margin-top: 40px;">The Classified Staff Union represents and protects the interests of hourly employees at UMass Boston</p>
+                <ul style="margin-top: 40px;">
+                    <li>✓ Clerical & Administrative Support Staff</li>
+                    <li>✓ Facilities & Maintenance Staff</li>
+                    <li>✓ Community Service Officers</li>
+                    <li>✓ All hourly positions</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: Current Contract -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Your Contract</h2>
+                <div class="highlight">
+                    <p style="margin: 0; font-size: 2em;">2024-2027</p>
+                    <p style="margin: 10px 0 0 0; font-size: 1.2em;">July 1, 2024 - June 30, 2027</p>
+                </div>
+                <p style="margin-top: 40px;">This agreement covers your salary, benefits, working conditions, and rights as a CSU member</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Salary Increases -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>💰 Scheduled Salary Increases</h2>
+                <div class="three-column">
+                    <div class="column">
+                        <h3>Jan 12, 2025</h3>
+                        <p>3% Raise</p>
+                    </div>
+                    <div class="column">
+                        <h3>Jul 13, 2025</h3>
+                        <p>2% Raise</p>
+                    </div>
+                    <div class="column">
+                        <h3>Jan 11, 2026</h3>
+                        <p>2% Raise</p>
+                    </div>
+                </div>
+                <p style="margin-top: 30px;">Additional raises scheduled through June 2027</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Bonuses -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🎁 Special Bonuses</h2>
+                <ul>
+                    <li><strong>Grade 17+:</strong> $400 one-time bonus</li>
+                    <li><strong>Grades 17/18 Step 14:</strong> Extra $1,000 bonus (last 2 years)</li>
+                    <li><strong>Longevity Bonus:</strong> $500/year for 15+ years of service</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 6: Vacation & Time Off -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>📅 Vacation Accrual (Full-time)</h2>
+                <ul>
+                    <li><strong>Less than 4 years:</strong> 10 days/year</li>
+                    <li><strong>4-9 years:</strong> 15 days/year</li>
+                    <li><strong>9-19 years:</strong> 20 days/year</li>
+                    <li><strong>19+ years:</strong> 25 days/year</li>
+                </ul>
+                <div class="highlight" style="margin-top: 30px;">
+                    <p>Sick Leave Buy-back: Up to 7 days based on usage</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Other Benefits -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>💼 Additional Benefits</h2>
+                <ul>
+                    <li><strong>Shift Differential:</strong> Extra pay for evening/night shifts</li>
+                    <li><strong>Standby Pay:</strong> $25/day (updated from $15)</li>
+                    <li><strong>Clothing Allowance (CSO):</strong> $2,000/year</li>
+                    <li><strong>Overtime Meal Allowance:</strong> Breakfast $12, Lunch $15, Dinner $25</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 8: Your Rights -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>⚖️ Your Rights as a CSU Member</h2>
+                <ul>
+                    <li>✓ Fair grievance procedures</li>
+                    <li>✓ Job security protections</li>
+                    <li>✓ Safe working conditions</li>
+                    <li>✓ Equal promotion opportunities</li>
+                    <li>✓ Representation in disputes</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 9: NEA Benefits -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🌟 NEA Member Benefits</h2>
+                <div class="full-width-benefit">
+                    <h3>Education & Professional Development</h3>
+                    <p>✓ Discounts on continuing education and professional courses</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Insurance Products</h3>
+                    <p>✓ Group discounts on auto, home, and life insurance</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Legal Services</h3>
+                    <p>✓ Access to NEA legal hotline and representation support</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Member Advocacy</h3>
+                    <p>✓ Legislative advocacy and collective bargaining support</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: UMass Boston Benefits -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🏢 UMass Boston Benefits</h2>
+                <div class="full-width-benefit">
+                    <h3>Health & Wellness</h3>
+                    <p>✓ Comprehensive health insurance, dental, and vision coverage</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Retirement Benefits</h3>
+                    <p>✓ 403(b) retirement plan with employer contributions</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Tuition Benefits</h3>
+                    <p>✓ Tuition reductions for employees and dependents</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Campus Resources</h3>
+                    <p>✓ Free access to fitness center, libraries, and cultural events</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Massachusetts State Benefits -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🏛️ State of Massachusetts Benefits</h2>
+                <div class="full-width-benefit">
+                    <h3>Public Employee Retirement System (PERS)</h3>
+                    <p>✓ Defined benefit pension plan for eligible state employees</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Workers' Compensation</h3>
+                    <p>✓ Full coverage for work-related injuries and illnesses</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Unemployment Insurance</h3>
+                    <p>✓ Protection if employment ends through no fault of your own</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Family and Medical Leave</h3>
+                    <p>✓ Up to 12 weeks unpaid leave under Massachusetts law</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: MTA Member Benefits -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>✈️ MTA Member Benefits</h2>
+                <div class="full-width-benefit">
+                    <h3>Travel Discounts</h3>
+                    <p>✓ Discounts on airfare, hotels, and vacation packages</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Retail & Entertainment</h3>
+                    <p>✓ Special offers on shopping, dining, and entertainment</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Wellness Programs</h3>
+                    <p>✓ Access to fitness programs and wellness resources</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Financial Services</h3>
+                    <p>✓ Discounted financial planning and money management tools</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Benefits Summary -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>📊 Your Complete Benefits Package</h2>
+                <div class="full-width-benefit">
+                    <h3>Through CSU Contract</h3>
+                    <p>Salary increases, bonuses, vacation, paid leave, shift differential</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Through NEA</h3>
+                    <p>Education discounts, insurance, legal services, advocacy</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Through UMass Boston</h3>
+                    <p>Health insurance, retirement, tuition benefits, campus access</p>
+                </div>
+                <div class="full-width-benefit">
+                    <h3>Through Massachusetts & MTA</h3>
+                    <p>Pension, workers' comp, travel discounts, wellness programs</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Getting Involved -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🤝 Get Involved</h2>
+                <p style="margin-top: 40px;">Learn more about your union and stay informed:</p>
+                <ul style="margin-top: 30px;">
+                    <li>Attend union meetings</li>
+                    <li>Connect with your steward</li>
+                    <li>Visit hr.umb.edu for contract documents</li>
+                    <li>Explore member benefits through NEA, MTA portals</li>
+                    <li>Ask questions - we're here to help!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 15: Questions -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 style="font-size: 3em; margin-bottom: 50px;">❓ Questions?</h1>
+                <p style="font-size: 1.5em; margin-bottom: 30px;">Contact Resources</p>
+                <div class="highlight">
+                    <p><strong>UMass Boston HR:</strong> hr.umb.edu</p>
+                    <p style="margin-top: 10px;"><strong>NEA:</strong> www.nea.org</p>
+                    <p style="margin-top: 10px;"><strong>MTA:</strong> www.massteacher.org</p>
+                </div>
+                <p style="margin-top: 40px; opacity: 0.9;">Welcome to the CSU Family! 🎓</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="previousSlide()">← Previous</button>
+        <button onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = document.querySelectorAll('.slide').length;
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide;
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function previousSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
