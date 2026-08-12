@@ -129,6 +129,9 @@
             display: flex;
             gap: 20px;
             z-index: 100;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 600px;
         }
 
         button {
@@ -151,6 +154,82 @@
 
         button:active {
             transform: scale(0.95);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .audio-controls {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 500px;
+        }
+
+        .audio-button {
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid #FFD700;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .audio-button:hover {
+            background: rgba(255, 215, 0, 0.5);
+            transform: scale(1.05);
+        }
+
+        .audio-button.active {
+            background: rgba(255, 215, 0, 0.7);
+        }
+
+        .voice-select {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .voice-select option {
+            color: #1e3c72;
+            background: white;
+        }
+
+        .speed-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .speed-control option {
+            color: #1e3c72;
+            background: white;
         }
 
         .slide-counter {
@@ -258,15 +337,41 @@
             font-size: 1.1em;
             margin: 0;
         }
+
+        .speech-indicator {
+            position: fixed;
+            top: 100px;
+            left: 30px;
+            color: #FFD700;
+            font-size: 1em;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            min-height: 20px;
+            min-width: 150px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .speech-indicator.inactive {
+            animation: none;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
     </style>
 </head>
 <body>
     <div class="logo">🎓 UMass Boston CSU</div>
+    <div class="speech-indicator inactive" id="speechIndicator">🔊 Auto-speak OFF</div>
     <div class="slide-counter"><span id="current-slide">1</span> / <span id="total-slides">15</span></div>
 
     <div class="presentation-container">
         <!-- Slide 1: Title -->
-        <div class="slide active">
+        <div class="slide active" data-speech-text="Welcome to CSU, Classified Staff Union. UMass Boston Onboarding. Let's learn about your benefits and rights.">
             <div class="slide-content">
                 <h1>🎉 Welcome to CSU</h1>
                 <p style="font-size: 1.8em; margin-bottom: 40px;">Classified Staff Union</p>
@@ -276,7 +381,7 @@
         </div>
 
         <!-- Slide 2: What is CSU? -->
-        <div class="slide">
+        <div class="slide" data-speech-text="What is the CSU? The Classified Staff Union represents and protects the interests of hourly employees at UMass Boston. This includes Clerical and Administrative Support Staff, Facilities and Maintenance Staff, Community Service Officers, and all hourly positions.">
             <div class="slide-content">
                 <h2>What is the CSU?</h2>
                 <p style="margin-top: 40px;">The Classified Staff Union represents and protects the interests of hourly employees at UMass Boston</p>
@@ -290,7 +395,7 @@
         </div>
 
         <!-- Slide 3: Current Contract -->
-        <div class="slide">
+        <div class="slide" data-speech-text="Your Contract. The current agreement runs from July 1, 2024 to June 30, 2027. This agreement covers your salary, benefits, working conditions, and rights as a CSU member.">
             <div class="slide-content">
                 <h2>Your Contract</h2>
                 <div class="highlight">
@@ -302,7 +407,7 @@
         </div>
 
         <!-- Slide 4: Salary Increases -->
-        <div class="slide">
+        <div class="slide" data-speech-text="Scheduled Salary Increases. You will receive a 3 percent raise effective January 12, 2025. Then 2 percent raises on July 13, 2025, January 11, 2026, and additional raises scheduled through June 2027.">
             <div class="slide-content">
                 <h2>💰 Scheduled Salary Increases</h2>
                 <div class="three-column">
@@ -324,7 +429,7 @@
         </div>
 
         <!-- Slide 5: Bonuses -->
-        <div class="slide">
+        <div class="slide" data-speech-text="Special Bonuses. Grade 17 and above receive a 400 dollar one-time bonus. Grades 17 and 18 Step 14 receive an extra 1000 dollar bonus in the last two years. All members with 15 or more years of service receive a 500 dollar longevity bonus each year.">
             <div class="slide-content">
                 <h2>🎁 Special Bonuses</h2>
                 <ul>
@@ -336,7 +441,7 @@
         </div>
 
         <!-- Slide 6: Vacation & Time Off -->
-        <div class="slide">
+        <div class="slide" data-speech-text="Vacation Accrual for full-time employees. Less than 4 years: 10 days per year. 4 to 9 years: 15 days per year. 9 to 19 years: 20 days per year. 19 or more years: 25 days per year. You can also cash in up to 7 sick days based on usage.">
             <div class="slide-content">
                 <h2>📅 Vacation Accrual (Full-time)</h2>
                 <ul>
@@ -352,7 +457,7 @@
         </div>
 
         <!-- Slide 7: Other Benefits -->
-        <div class="slide">
+        <div class="slide" data-speech-text="Additional Benefits. You receive shift differential for extra pay on evening and night shifts. Standby pay is 25 dollars per day. Community Service Officers receive a 2000 dollar annual clothing allowance. Overtime meal allowances include: Breakfast 12 dollars, Lunch 15 dollars, Dinner 25 dollars, and Midnight Snack 9 dollars.">
             <div class="slide-content">
                 <h2>💼 Additional Benefits</h2>
                 <ul>
@@ -365,7 +470,7 @@
         </div>
 
         <!-- Slide 8: Your Rights -->
-        <div class="slide">
+        <div class="slide" data-speech-text="Your Rights as a CSU Member. You have fair grievance procedures, job security protections, safe working conditions, equal promotion opportunities, and representation in disputes.">
             <div class="slide-content">
                 <h2>⚖️ Your Rights as a CSU Member</h2>
                 <ul>
@@ -379,7 +484,7 @@
         </div>
 
         <!-- Slide 9: NEA Benefits -->
-        <div class="slide">
+        <div class="slide" data-speech-text="NEA Member Benefits. You get discounts on continuing education and professional courses. Group discounts on auto, home, and life insurance. Access to NEA legal hotline and representation support. Legislative advocacy and collective bargaining support.">
             <div class="slide-content">
                 <h2>🌟 NEA Member Benefits</h2>
                 <div class="full-width-benefit">
@@ -402,7 +507,7 @@
         </div>
 
         <!-- Slide 10: UMass Boston Benefits -->
-        <div class="slide">
+        <div class="slide" data-speech-text="UMass Boston Benefits. You receive comprehensive health insurance, dental, and vision coverage. A 403-b retirement plan with employer contributions. Tuition reductions for you and your dependents. Free access to the fitness center, libraries, and cultural events on campus.">
             <div class="slide-content">
                 <h2>🏢 UMass Boston Benefits</h2>
                 <div class="full-width-benefit">
@@ -425,7 +530,7 @@
         </div>
 
         <!-- Slide 11: Massachusetts State Benefits -->
-        <div class="slide">
+        <div class="slide" data-speech-text="State of Massachusetts Benefits. You have access to the Public Employee Retirement System or PERS, a defined benefit pension plan for eligible state employees. Full workers' compensation coverage for work-related injuries and illnesses. Unemployment insurance protection if employment ends through no fault of your own. Up to 12 weeks of unpaid family and medical leave under Massachusetts law.">
             <div class="slide-content">
                 <h2>🏛️ State of Massachusetts Benefits</h2>
                 <div class="full-width-benefit">
@@ -448,7 +553,7 @@
         </div>
 
         <!-- Slide 12: MTA Member Benefits -->
-        <div class="slide">
+        <div class="slide" data-speech-text="MTA Member Benefits. You receive discounts on airfare, hotels, and vacation packages. Special offers on shopping, dining, and entertainment. Access to fitness programs and wellness resources. Discounted financial planning and money management tools.">
             <div class="slide-content">
                 <h2>✈️ MTA Member Benefits</h2>
                 <div class="full-width-benefit">
@@ -471,7 +576,7 @@
         </div>
 
         <!-- Slide 13: Benefits Summary -->
-        <div class="slide">
+        <div class="slide" data-speech-text="Your Complete Benefits Package. Through the CSU Contract you get salary increases, bonuses, vacation, paid leave, and shift differential. Through NEA you get education discounts, insurance, legal services, and advocacy. Through UMass Boston you get health insurance, retirement, tuition benefits, and campus access. Through Massachusetts and MTA you get pension, workers compensation, travel discounts, and wellness programs.">
             <div class="slide-content">
                 <h2>📊 Your Complete Benefits Package</h2>
                 <div class="full-width-benefit">
@@ -494,7 +599,7 @@
         </div>
 
         <!-- Slide 14: Getting Involved -->
-        <div class="slide">
+        <div class="slide" data-speech-text="Get Involved. Learn more about your union and stay informed. Attend union meetings. Connect with your steward. Visit hr.umb.edu for contract documents. Explore member benefits through NEA and MTA portals. Ask questions, we're here to help!">
             <div class="slide-content">
                 <h2>🤝 Get Involved</h2>
                 <p style="margin-top: 40px;">Learn more about your union and stay informed:</p>
@@ -509,7 +614,7 @@
         </div>
 
         <!-- Slide 15: Questions -->
-        <div class="slide">
+        <div class="slide" data-speech-text="Questions? Contact Resources. UMass Boston Human Resources at hr.umb.edu. NEA at www.nea.org. MTA at www.massteacher.org. Welcome to the CSU Family!">
             <div class="slide-content">
                 <h1 style="font-size: 3em; margin-bottom: 50px;">❓ Questions?</h1>
                 <p style="font-size: 1.5em; margin-bottom: 30px;">Contact Resources</p>
@@ -523,6 +628,21 @@
         </div>
     </div>
 
+    <div class="audio-controls">
+        <button class="audio-button" onclick="toggleAutoSpeak()" id="autoSpeakBtn">🔊 Auto-Speak</button>
+        <button class="audio-button" onclick="speakCurrentSlide()">▶ Speak Now</button>
+        <button class="audio-button" onclick="stopSpeech()">⏹ Stop</button>
+        <select class="voice-select" id="voiceSelect" onchange="updateVoice()">
+            <option value="">Select Voice</option>
+        </select>
+        <select class="speed-control" id="speedSelect" onchange="updateSpeed()">
+            <option value="0.5">0.5x Speed</option>
+            <option value="1" selected>1x Speed</option>
+            <option value="1.5">1.5x Speed</option>
+            <option value="2">2x Speed</option>
+        </select>
+    </div>
+
     <div class="controls">
         <button onclick="previousSlide()">← Previous</button>
         <button onclick="nextSlide()">Next →</button>
@@ -530,8 +650,97 @@
 
     <script>
         let currentSlide = 1;
+        let autoSpeak = false;
+        let currentUtterance = null;
         const totalSlides = document.querySelectorAll('.slide').length;
         document.getElementById('total-slides').textContent = totalSlides;
+        let selectedVoice = null;
+        let speechRate = 1;
+
+        // Populate voice options
+        function loadVoices() {
+            const voices = window.speechSynthesis.getVoices();
+            const voiceSelect = document.getElementById('voiceSelect');
+            
+            // Clear existing options except the first one
+            while (voiceSelect.options.length > 1) {
+                voiceSelect.remove(1);
+            }
+            
+            voices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        // Load voices when they're ready
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+        loadVoices();
+
+        function updateVoice() {
+            const voiceSelect = document.getElementById('voiceSelect');
+            selectedVoice = window.speechSynthesis.getVoices()[voiceSelect.value];
+        }
+
+        function updateSpeed() {
+            speechRate = parseFloat(document.getElementById('speedSelect').value);
+        }
+
+        function speakText(text) {
+            // Stop any ongoing speech
+            stopSpeech();
+
+            currentUtterance = new SpeechSynthesisUtterance(text);
+            currentUtterance.rate = speechRate;
+            
+            if (selectedVoice) {
+                currentUtterance.voice = selectedVoice;
+            }
+
+            currentUtterance.onend = function() {
+                if (autoSpeak && currentSlide < totalSlides) {
+                    // Auto advance and speak next slide
+                    nextSlide();
+                }
+            };
+
+            window.speechSynthesis.speak(currentUtterance);
+        }
+
+        function speakCurrentSlide() {
+            const slide = document.querySelectorAll('.slide')[currentSlide - 1];
+            const speechText = slide.getAttribute('data-speech-text');
+            if (speechText) {
+                speakText(speechText);
+            }
+        }
+
+        function stopSpeech() {
+            window.speechSynthesis.cancel();
+            currentUtterance = null;
+        }
+
+        function toggleAutoSpeak() {
+            autoSpeak = !autoSpeak;
+            const btn = document.getElementById('autoSpeakBtn');
+            const indicator = document.getElementById('speechIndicator');
+            
+            if (autoSpeak) {
+                btn.classList.add('active');
+                indicator.classList.remove('inactive');
+                indicator.textContent = '🔊 Auto-speak ON';
+                speakCurrentSlide();
+            } else {
+                btn.classList.remove('active');
+                indicator.classList.add('inactive');
+                indicator.textContent = '🔊 Auto-speak OFF';
+                stopSpeech();
+            }
+        }
 
         function showSlide(n) {
             const slides = document.querySelectorAll('.slide');
@@ -541,6 +750,12 @@
             slides.forEach(slide => slide.classList.remove('active'));
             slides[currentSlide - 1].classList.add('active');
             document.getElementById('current-slide').textContent = currentSlide;
+            
+            // Auto-speak if enabled
+            if (autoSpeak) {
+                stopSpeech();
+                setTimeout(() => speakCurrentSlide(), 500);
+            }
         }
 
         function nextSlide() {
@@ -557,6 +772,14 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') previousSlide();
+            if (e.key === ' ') {
+                e.preventDefault();
+                if (autoSpeak) {
+                    toggleAutoSpeak();
+                } else {
+                    speakCurrentSlide();
+                }
+            }
         });
 
         showSlide(currentSlide);
