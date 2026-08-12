@@ -122,6 +122,16 @@
             font-weight: 600;
         }
 
+        .explanation {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+            margin: 20px 0;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
         .play-button-corner {
             position: fixed;
             bottom: 40px;
@@ -162,7 +172,7 @@
             z-index: 100;
             flex-wrap: wrap;
             justify-content: center;
-            max-width: 600px;
+            max-width: 400px;
         }
 
         button {
@@ -192,77 +202,6 @@
             cursor: not-allowed;
         }
 
-        .audio-controls {
-            position: fixed;
-            bottom: 120px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px 30px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            z-index: 100;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 500px;
-        }
-
-        .audio-button {
-            background: rgba(255, 215, 0, 0.3);
-            border: 2px solid #FFD700;
-            color: white;
-            padding: 10px 20px;
-            font-size: 1em;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .audio-button:hover {
-            background: rgba(255, 215, 0, 0.5);
-            transform: scale(1.05);
-        }
-
-        .audio-button.active {
-            background: rgba(255, 215, 0, 0.7);
-        }
-
-        .voice-select {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid white;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-        }
-
-        .voice-select option {
-            color: #1e3c72;
-            background: white;
-        }
-
-        .speed-control {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid white;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-        }
-
-        .speed-control option {
-            color: #1e3c72;
-            background: white;
-        }
-
         .slide-counter {
             position: fixed;
             top: 30px;
@@ -288,113 +227,134 @@
             backdrop-filter: blur(10px);
         }
 
-        .emoji {
-            font-size: 1.2em;
-            margin: 0 10px;
-        }
-
-        .salary-box {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border: 2px solid #FFD700;
-        }
-
-        .three-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .column {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            border-top: 3px solid #FFD700;
-        }
-
-        .column h3 {
-            font-size: 1.3em;
-            margin-bottom: 15px;
-        }
-
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .benefit-box {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 4px solid #FFD700;
-        }
-
-        .benefit-box h3 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            text-align: left;
-        }
-
-        .benefit-box ul {
-            margin: 0;
-        }
-
-        .benefit-box li {
-            font-size: 1.1em;
-            margin-bottom: 8px;
-        }
-
-        .full-width-benefit {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px 20px;
-            border-radius: 10px;
-            border-left: 4px solid #FFD700;
-            margin: 12px 0;
-            text-align: left;
-        }
-
-        .full-width-benefit h3 {
-            font-size: 1.2em;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .full-width-benefit p {
-            font-size: 1.1em;
-            margin: 0;
-        }
-
-        .speech-indicator {
+        .edit-mode-indicator {
             position: fixed;
-            top: 100px;
-            left: 30px;
-            color: #FFD700;
-            font-size: 1em;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 15px;
+            top: 30px;
+            right: 200px;
+            background: rgba(255, 215, 0, 0.7);
+            color: #1e3c72;
+            padding: 10px 20px;
             border-radius: 50px;
-            backdrop-filter: blur(10px);
-            min-height: 20px;
-            min-width: 150px;
-            animation: pulse 1.5s infinite;
+            font-weight: bold;
+            display: none;
+            z-index: 200;
         }
 
-        .speech-indicator.inactive {
-            animation: none;
-            color: rgba(255, 255, 255, 0.5);
+        .edit-mode-indicator.active {
+            display: block;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+        .admin-edit-btn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid #FFD700;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: none;
+            z-index: 100;
         }
 
-        /* Edit Mode Styles */
+        .admin-edit-btn:hover {
+            background: rgba(255, 215, 0, 0.5);
+            transform: scale(1.05);
+        }
+
+        .admin-edit-btn.visible {
+            display: block;
+        }
+
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+        }
+
+        .login-modal.hidden {
+            display: none;
+        }
+
+        .login-box {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 40px;
+            border-radius: 15px;
+            border: 3px solid #FFD700;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-box h2 {
+            color: #FFD700;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #FFD700;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .login-box input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid #FFD700;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-box button:hover {
+            background: rgba(255, 215, 0, 0.5);
+        }
+
+        .login-error {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .skip-login {
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 15px;
+            font-size: 0.9em;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .skip-login:hover {
+            color: white;
+        }
+
+        /* Edit Panel */
         .edit-panel {
             position: fixed;
             right: 0;
@@ -472,29 +432,61 @@
             background: rgba(255, 215, 0, 0.5);
         }
 
-        .edit-mode-indicator {
-            position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 215, 0, 0.7);
-            color: #1e3c72;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            display: none;
-            z-index: 200;
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
         }
 
-        .edit-mode-indicator.active {
-            display: block;
+        .column {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 3px solid #FFD700;
+        }
+
+        .column h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .full-width-benefit {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+            margin: 12px 0;
+            text-align: left;
+        }
+
+        .full-width-benefit h3 {
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .full-width-benefit p {
+            font-size: 1.1em;
+            margin: 0;
         }
     </style>
 </head>
 <body>
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-box">
+            <h2>🔐 Administrator Login</h2>
+            <div class="login-error" id="loginError">Invalid password. Please try again.</div>
+            <input type="password" id="adminPassword" placeholder="Enter admin password" onkeypress="handleLoginKey(event)">
+            <button onclick="adminLogin()">Login</button>
+            <div class="skip-login" onclick="skipLogin()">Skip (View Only)</div>
+        </div>
+    </div>
+
     <div class="logo">🎓 UMass Boston CSU</div>
     <div class="edit-mode-indicator" id="editModeIndicator">✏️ EDIT MODE</div>
-    <div class="speech-indicator inactive" id="speechIndicator">🔊 Auto-speak OFF</div>
+    <button class="admin-edit-btn" id="adminEditBtn" onclick="toggleEditMode()" title="Click to edit slides (Admin Only)">✏️ Edit</button>
     <div class="slide-counter"><span id="current-slide">1</span> / <span id="total-slides">15</span></div>
 
     <!-- Play Button Bottom Left Corner -->
@@ -508,6 +500,9 @@
                 <p style="font-size: 1.8em; margin-bottom: 40px;">Classified Staff Union</p>
                 <p>UMass Boston Onboarding</p>
                 <p style="margin-top: 40px; opacity: 0.9;">Let's learn about your benefits and rights</p>
+                <div class="explanation">
+                    <strong>What This Means:</strong> This onboarding session is designed to help you understand your membership in the Classified Staff Union and all the benefits and protections you receive. As a new member, you're joining a community of workers who are committed to fair wages, safe working conditions, and professional development.
+                </div>
             </div>
         </div>
 
@@ -522,6 +517,9 @@
                     <li>✓ Community Service Officers</li>
                     <li>✓ All hourly positions</li>
                 </ul>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> The CSU is your collective voice in the workplace. Through collective bargaining, we negotiate contracts that set your salary, benefits, and working conditions. Union membership means you have legal representation and support if workplace issues arise. Your union steward is your advocate and can help resolve disputes or concerns.
+                </div>
             </div>
         </div>
 
@@ -534,6 +532,9 @@
                     <p style="margin: 10px 0 0 0; font-size: 1.2em;">July 1, 2024 - June 30, 2027</p>
                 </div>
                 <p style="margin-top: 40px;">This agreement covers your salary, benefits, working conditions, and rights as a CSU member</p>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> Your contract is a legally binding agreement between you and UMass Boston. It protects your rights and guarantees minimum standards for pay, benefits, and working conditions. Everything discussed in this presentation comes from this contract. You can access the full contract document through the HR website for complete details and protections.
+                </div>
             </div>
         </div>
 
@@ -556,6 +557,9 @@
                     </div>
                 </div>
                 <p style="margin-top: 30px;">Additional raises scheduled through June 2027</p>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> These guaranteed raises mean your income will increase automatically on these dates without requiring any action from you. The first raise is 3%, then subsequent raises are 2%. For example, if you earn $30,000 today, you'll gain $900 in January and $600 every subsequent raise. Check with HR for exact raise amounts based on your current grade and step.
+                </div>
             </div>
         </div>
 
@@ -568,6 +572,9 @@
                     <li><strong>Grades 17/18 Step 14:</strong> Extra $1,000 bonus (last 2 years)</li>
                     <li><strong>Longevity Bonus:</strong> $500/year for 15+ years of service</li>
                 </ul>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> Bonuses reward your loyalty and seniority. Check your grade level with HR to see if you qualify. The longevity bonus recognizes your commitment to UMass Boston and the CSU. These are extra payments on top of your regular salary, helping you achieve financial stability and recognize your value to the organization.
+                </div>
             </div>
         </div>
 
@@ -584,6 +591,9 @@
                 <div class="highlight" style="margin-top: 30px;">
                     <p>Sick Leave Buy-back: Up to 7 days based on usage</p>
                 </div>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> Vacation time increases as you build tenure, rewarding loyalty and giving you more flexibility for rest and personal needs. The sick leave buy-back means if you don't use all your sick days, you can convert them to pay at the end of the year. Plan your vacation early with your supervisor to ensure coverage and approval.
+                </div>
             </div>
         </div>
 
@@ -597,6 +607,9 @@
                     <li><strong>Clothing Allowance (CSO):</strong> $2,000/year</li>
                     <li><strong>Overtime Meal Allowance:</strong> Breakfast $12, Lunch $15, Dinner $25</li>
                 </ul>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> These benefits recognize the extra demands of certain positions and schedules. If you work evenings, nights, or weekends, you receive higher pay rates. Standby pay compensates you for being available to respond to emergencies. Meal allowances ensure you're taken care of during long shifts. Check if you're eligible for any of these based on your role.
+                </div>
             </div>
         </div>
 
@@ -611,6 +624,9 @@
                     <li>✓ Equal promotion opportunities</li>
                     <li>✓ Representation in disputes</li>
                 </ul>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> These rights protect you from unfair treatment at work. If you experience discrimination, unsafe conditions, or unjust discipline, you have legal recourse through the union. The grievance process ensures your concerns are heard fairly. You're never alone—your union steward is trained to advocate for you and ensure management follows contractual obligations.
+                </div>
             </div>
         </div>
 
@@ -633,6 +649,9 @@
                 <div class="full-width-benefit">
                     <h3>Member Advocacy</h3>
                     <p>✓ Legislative advocacy and collective bargaining support</p>
+                </div>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> NEA membership extends your benefits beyond UMass Boston. These discounts can save you hundreds on insurance premiums. Professional development opportunities help you advance your career. The legal hotline is available if you need workplace legal advice. Visit www.nea.org to explore all available benefits and log into your member portal.
                 </div>
             </div>
         </div>
@@ -657,6 +676,9 @@
                     <h3>Campus Resources</h3>
                     <p>✓ Free access to fitness center, libraries, and cultural events</p>
                 </div>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> These benefits support your health, wealth, and education. The 403(b) plan with employer contributions is retirement savings that grows tax-free. Tuition reductions can help you or your children earn degrees. Campus resources offer free fitness and wellness opportunities. Contact HR to enroll in benefits during open enrollment periods.
+                </div>
             </div>
         </div>
 
@@ -679,6 +701,9 @@
                 <div class="full-width-benefit">
                     <h3>Family and Medical Leave</h3>
                     <p>✓ Up to 12 weeks unpaid leave under Massachusetts law</p>
+                </div>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> PERS provides a guaranteed retirement income based on your salary and years of service—not dependent on market returns. Workers' compensation protects you if injured on the job. Family and medical leave allows you to care for yourself or loved ones without losing your job. These are state-level protections that strengthen CSU contract benefits.
                 </div>
             </div>
         </div>
@@ -703,6 +728,9 @@
                     <h3>Financial Services</h3>
                     <p>✓ Discounted financial planning and money management tools</p>
                 </div>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> MTA membership makes leisure affordable. Travel discounts help you explore new places with your family. Retail and entertainment offers give you access to concerts, shows, and dining at reduced prices. Wellness programs support your mental and physical health. Financial planning services help you make smart decisions about saving and investing. Visit www.massteacher.org for a complete discount guide.
+                </div>
             </div>
         </div>
 
@@ -726,6 +754,9 @@
                     <h3>Through Massachusetts & MTA</h3>
                     <p>Pension, workers' comp, travel discounts, wellness programs</p>
                 </div>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> Your total benefits package is worth far more than your salary alone. When you add up health insurance, retirement contributions, vacation days, bonuses, and discounts, you're receiving comprehensive compensation. Take time to explore each benefit area and use what's available to you. Maximize your benefits to improve your financial security and quality of life.
+                </div>
             </div>
         </div>
 
@@ -741,6 +772,9 @@
                     <li>Explore member benefits through NEA, MTA portals</li>
                     <li>Ask questions - we're here to help!</li>
                 </ul>
+                <div class="explanation">
+                    <strong>Why It Matters:</strong> An informed and engaged membership makes the union stronger. Union meetings let you voice concerns and stay updated on workplace issues. Your steward is a trained advocate ready to help you navigate challenges. The more you participate, the more the union can effectively represent your interests and negotiate better contracts for all members.
+                </div>
             </div>
         </div>
 
@@ -754,28 +788,16 @@
                     <p style="margin-top: 10px;"><strong>NEA:</strong> www.nea.org</p>
                     <p style="margin-top: 10px;"><strong>MTA:</strong> www.massteacher.org</p>
                 </div>
+                <div class="explanation">
+                    <strong>Next Steps:</strong> Bookmark these resources for future reference. Don't hesitate to reach out with questions—HR, your steward, and union representatives are here to support you. Take advantage of all the benefits and protections available to you as a CSU member. Welcome to the union family!
+                </div>
                 <p style="margin-top: 40px; opacity: 0.9;">Welcome to the CSU Family! 🎓</p>
             </div>
         </div>
     </div>
 
-    <div class="audio-controls">
-        <button class="audio-button" onclick="toggleAutoSpeak()" id="autoSpeakBtn">🔊 Auto-Speak</button>
-        <button class="audio-button" onclick="stopSpeech()">⏹ Stop</button>
-        <select class="voice-select" id="voiceSelect" onchange="updateVoice()">
-            <option value="">Select Voice</option>
-        </select>
-        <select class="speed-control" id="speedSelect" onchange="updateSpeed()">
-            <option value="0.5">0.5x Speed</option>
-            <option value="1" selected>1x Speed</option>
-            <option value="1.5">1.5x Speed</option>
-            <option value="2">2x Speed</option>
-        </select>
-    </div>
-
     <div class="controls">
         <button onclick="previousSlide()">← Previous</button>
-        <button onclick="toggleEditMode()">✏️ Edit</button>
         <button onclick="nextSlide()">Next →</button>
     </div>
 
@@ -801,63 +823,67 @@
 
     <script>
         let currentSlide = 1;
-        let autoSpeak = false;
         let currentUtterance = null;
         const totalSlides = document.querySelectorAll('.slide').length;
         document.getElementById('total-slides').textContent = totalSlides;
         let selectedVoice = null;
         let speechRate = 1;
         let editMode = false;
+        let isAdmin = false;
+        const ADMIN_PASSWORD = "admin123"; // Change this to your desired password
+
+        // Show login modal on load
+        window.addEventListener('load', function() {
+            document.getElementById('loginModal').classList.remove('hidden');
+        });
+
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('adminEditBtn').classList.add('visible');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        function skipLogin() {
+            isAdmin = false;
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('adminEditBtn').classList.remove('visible');
+        }
+
+        function handleLoginKey(event) {
+            if (event.key === 'Enter') {
+                adminLogin();
+            }
+        }
 
         // Populate voice options and prefer American English
         function loadVoices() {
             const voices = window.speechSynthesis.getVoices();
-            const voiceSelect = document.getElementById('voiceSelect');
-            
-            // Clear existing options except the first one
-            while (voiceSelect.options.length > 1) {
-                voiceSelect.remove(1);
-            }
-            
-            // Find American English voice
             let americanVoice = null;
-            voices.forEach((voice, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = `${voice.name} (${voice.lang})`;
-                voiceSelect.appendChild(option);
-                
-                // Look for American English voice
+            
+            voices.forEach((voice) => {
                 if (voice.lang.includes('en-US') || voice.lang.includes('en-us')) {
-                    americanVoice = index;
+                    americanVoice = voice;
                 }
             });
             
-            // Set American voice as default if found
-            if (americanVoice !== null) {
-                voiceSelect.value = americanVoice;
-                updateVoice();
+            if (americanVoice) {
+                selectedVoice = americanVoice;
             }
         }
 
-        // Load voices when they're ready
         if (window.speechSynthesis.onvoiceschanged !== undefined) {
             window.speechSynthesis.onvoiceschanged = loadVoices;
         }
         loadVoices();
 
-        function updateVoice() {
-            const voiceSelect = document.getElementById('voiceSelect');
-            selectedVoice = window.speechSynthesis.getVoices()[voiceSelect.value];
-        }
-
-        function updateSpeed() {
-            speechRate = parseFloat(document.getElementById('speedSelect').value);
-        }
-
         function speakText(text) {
-            // Stop any ongoing speech
-            stopSpeech();
+            window.speechSynthesis.cancel();
 
             currentUtterance = new SpeechSynthesisUtterance(text);
             currentUtterance.rate = speechRate;
@@ -865,13 +891,6 @@
             if (selectedVoice) {
                 currentUtterance.voice = selectedVoice;
             }
-
-            currentUtterance.onend = function() {
-                if (autoSpeak && currentSlide < totalSlides) {
-                    // Auto advance and speak next slide
-                    nextSlide();
-                }
-            };
 
             window.speechSynthesis.speak(currentUtterance);
         }
@@ -889,24 +908,6 @@
             currentUtterance = null;
         }
 
-        function toggleAutoSpeak() {
-            autoSpeak = !autoSpeak;
-            const btn = document.getElementById('autoSpeakBtn');
-            const indicator = document.getElementById('speechIndicator');
-            
-            if (autoSpeak) {
-                btn.classList.add('active');
-                indicator.classList.remove('inactive');
-                indicator.textContent = '🔊 Auto-speak ON';
-                speakCurrentSlide();
-            } else {
-                btn.classList.remove('active');
-                indicator.classList.add('inactive');
-                indicator.textContent = '🔊 Auto-speak OFF';
-                stopSpeech();
-            }
-        }
-
         function showSlide(n) {
             const slides = document.querySelectorAll('.slide');
             if (n > totalSlides) currentSlide = 1;
@@ -915,17 +916,6 @@
             slides.forEach(slide => slide.classList.remove('active'));
             slides[currentSlide - 1].classList.add('active');
             document.getElementById('current-slide').textContent = currentSlide;
-            
-            // Auto-speak if enabled
-            if (autoSpeak && !editMode) {
-                stopSpeech();
-                setTimeout(() => speakCurrentSlide(), 500);
-            }
-
-            // Load edit panel if in edit mode
-            if (editMode) {
-                loadEditPanel();
-            }
         }
 
         function nextSlide() {
@@ -940,6 +930,11 @@
 
         // EDIT MODE FUNCTIONS
         function toggleEditMode() {
+            if (!isAdmin) {
+                alert('Admin access required to edit slides.');
+                return;
+            }
+
             editMode = !editMode;
             const editPanel = document.getElementById('editPanel');
             const closeBtn = document.getElementById('closeEditBtn');
@@ -963,7 +958,6 @@
             const content = slide.querySelector('.slide-content');
             const speechText = slide.getAttribute('data-speech-text');
             
-            // Extract title and content from HTML
             const title = content.querySelector('h1, h2')?.textContent || '';
             const contentText = content.innerText.replace(title, '').trim();
             
@@ -978,15 +972,12 @@
             const content = document.getElementById('editContent').value;
             const speechText = document.getElementById('editSpeech').value;
             
-            // Update speech attribute
             slide.setAttribute('data-speech-text', speechText);
             
-            // Reconstruct slide content
             const slideContent = slide.querySelector('.slide-content');
             const heading = slideContent.querySelector('h1, h2') || document.createElement('h2');
             heading.textContent = title;
             
-            // Update content (simplified approach)
             slideContent.innerHTML = `<${heading.tagName}>${title}</${heading.tagName}><p style="margin-top: 20px;">${content.replace(/\n/g, '</p><p>')}</p>`;
             
             alert('Slide saved successfully!');
@@ -1004,8 +995,7 @@
             `;
             
             document.querySelector('.presentation-container').appendChild(newSlide);
-            const totalSlidesElem = document.getElementById('total-slides');
-            totalSlidesElem.textContent = document.querySelectorAll('.slide').length;
+            document.getElementById('total-slides').textContent = document.querySelectorAll('.slide').length;
             alert('New slide added! Navigate to it with the Next button.');
         }
 
@@ -1028,18 +1018,10 @@
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (editMode) return; // Disable keyboard nav in edit mode
+            if (editMode) return;
             
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') previousSlide();
-            if (e.key === ' ') {
-                e.preventDefault();
-                if (autoSpeak) {
-                    toggleAutoSpeak();
-                } else {
-                    speakCurrentSlide();
-                }
-            }
         });
 
         showSlide(currentSlide);
