@@ -24,6 +24,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
         }
 
         .slide {
@@ -119,6 +120,36 @@
             border-left: 5px solid #FFD700;
             margin: 20px 0;
             font-weight: 600;
+        }
+
+        .play-button-corner {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 215, 0, 0.3);
+            border: 3px solid #FFD700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 99;
+            font-size: 2.5em;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .play-button-corner:hover {
+            background: rgba(255, 215, 0, 0.5);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .play-button-corner:active {
+            transform: scale(0.95);
         }
 
         .controls {
@@ -362,12 +393,112 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.6; }
         }
+
+        /* Edit Mode Styles */
+        .edit-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 350px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            border-left: 3px solid #FFD700;
+        }
+
+        .edit-panel.active {
+            transform: translateX(0);
+        }
+
+        .edit-panel h3 {
+            margin-bottom: 15px;
+            color: #FFD700;
+            font-size: 1.3em;
+        }
+
+        .edit-panel textarea, .edit-panel input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #FFD700;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 0.9em;
+        }
+
+        .edit-panel textarea::placeholder, .edit-panel input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .edit-panel button {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid #FFD700;
+            color: white;
+        }
+
+        .edit-panel button:hover {
+            background: rgba(255, 215, 0, 0.5);
+        }
+
+        .close-edit-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid #FFD700;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 201;
+        }
+
+        .close-edit-btn:hover {
+            background: rgba(255, 215, 0, 0.5);
+        }
+
+        .edit-mode-indicator {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 215, 0, 0.7);
+            color: #1e3c72;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            display: none;
+            z-index: 200;
+        }
+
+        .edit-mode-indicator.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div class="logo">🎓 UMass Boston CSU</div>
+    <div class="edit-mode-indicator" id="editModeIndicator">✏️ EDIT MODE</div>
     <div class="speech-indicator inactive" id="speechIndicator">🔊 Auto-speak OFF</div>
     <div class="slide-counter"><span id="current-slide">1</span> / <span id="total-slides">15</span></div>
+
+    <!-- Play Button Bottom Left Corner -->
+    <div class="play-button-corner" onclick="speakCurrentSlide()" title="Click to hear this slide">▶</div>
 
     <div class="presentation-container">
         <!-- Slide 1: Title -->
@@ -630,7 +761,6 @@
 
     <div class="audio-controls">
         <button class="audio-button" onclick="toggleAutoSpeak()" id="autoSpeakBtn">🔊 Auto-Speak</button>
-        <button class="audio-button" onclick="speakCurrentSlide()">▶ Speak Now</button>
         <button class="audio-button" onclick="stopSpeech()">⏹ Stop</button>
         <select class="voice-select" id="voiceSelect" onchange="updateVoice()">
             <option value="">Select Voice</option>
@@ -645,8 +775,29 @@
 
     <div class="controls">
         <button onclick="previousSlide()">← Previous</button>
+        <button onclick="toggleEditMode()">✏️ Edit</button>
         <button onclick="nextSlide()">Next →</button>
     </div>
+
+    <!-- Edit Panel -->
+    <div class="edit-panel" id="editPanel">
+        <h3>Edit Slide</h3>
+        <label style="color: #FFD700;">Slide Title:</label>
+        <input type="text" id="editTitle" placeholder="Enter slide title">
+        
+        <label style="color: #FFD700;">Slide Content:</label>
+        <textarea id="editContent" rows="8" placeholder="Enter slide content"></textarea>
+        
+        <label style="color: #FFD700;">Speech Text:</label>
+        <textarea id="editSpeech" rows="6" placeholder="Enter text to be spoken"></textarea>
+        
+        <button onclick="saveSlideEdit()">💾 Save Changes</button>
+        <button onclick="addNewSlide()">➕ Add New Slide</button>
+        <button onclick="deleteCurrentSlide()">🗑️ Delete Slide</button>
+        <button onclick="toggleEditMode()">✕ Close Editor</button>
+    </div>
+
+    <div class="close-edit-btn" id="closeEditBtn" style="display: none;" onclick="toggleEditMode()">✕</div>
 
     <script>
         let currentSlide = 1;
@@ -656,8 +807,9 @@
         document.getElementById('total-slides').textContent = totalSlides;
         let selectedVoice = null;
         let speechRate = 1;
+        let editMode = false;
 
-        // Populate voice options
+        // Populate voice options and prefer American English
         function loadVoices() {
             const voices = window.speechSynthesis.getVoices();
             const voiceSelect = document.getElementById('voiceSelect');
@@ -667,12 +819,25 @@
                 voiceSelect.remove(1);
             }
             
+            // Find American English voice
+            let americanVoice = null;
             voices.forEach((voice, index) => {
                 const option = document.createElement('option');
                 option.value = index;
                 option.textContent = `${voice.name} (${voice.lang})`;
                 voiceSelect.appendChild(option);
+                
+                // Look for American English voice
+                if (voice.lang.includes('en-US') || voice.lang.includes('en-us')) {
+                    americanVoice = index;
+                }
             });
+            
+            // Set American voice as default if found
+            if (americanVoice !== null) {
+                voiceSelect.value = americanVoice;
+                updateVoice();
+            }
         }
 
         // Load voices when they're ready
@@ -752,9 +917,14 @@
             document.getElementById('current-slide').textContent = currentSlide;
             
             // Auto-speak if enabled
-            if (autoSpeak) {
+            if (autoSpeak && !editMode) {
                 stopSpeech();
                 setTimeout(() => speakCurrentSlide(), 500);
+            }
+
+            // Load edit panel if in edit mode
+            if (editMode) {
+                loadEditPanel();
             }
         }
 
@@ -768,8 +938,98 @@
             showSlide(currentSlide);
         }
 
+        // EDIT MODE FUNCTIONS
+        function toggleEditMode() {
+            editMode = !editMode;
+            const editPanel = document.getElementById('editPanel');
+            const closeBtn = document.getElementById('closeEditBtn');
+            const indicator = document.getElementById('editModeIndicator');
+            
+            if (editMode) {
+                editPanel.classList.add('active');
+                closeBtn.style.display = 'flex';
+                indicator.classList.add('active');
+                loadEditPanel();
+                stopSpeech();
+            } else {
+                editPanel.classList.remove('active');
+                closeBtn.style.display = 'none';
+                indicator.classList.remove('active');
+            }
+        }
+
+        function loadEditPanel() {
+            const slide = document.querySelectorAll('.slide')[currentSlide - 1];
+            const content = slide.querySelector('.slide-content');
+            const speechText = slide.getAttribute('data-speech-text');
+            
+            // Extract title and content from HTML
+            const title = content.querySelector('h1, h2')?.textContent || '';
+            const contentText = content.innerText.replace(title, '').trim();
+            
+            document.getElementById('editTitle').value = title;
+            document.getElementById('editContent').value = contentText;
+            document.getElementById('editSpeech').value = speechText || '';
+        }
+
+        function saveSlideEdit() {
+            const slide = document.querySelectorAll('.slide')[currentSlide - 1];
+            const title = document.getElementById('editTitle').value;
+            const content = document.getElementById('editContent').value;
+            const speechText = document.getElementById('editSpeech').value;
+            
+            // Update speech attribute
+            slide.setAttribute('data-speech-text', speechText);
+            
+            // Reconstruct slide content
+            const slideContent = slide.querySelector('.slide-content');
+            const heading = slideContent.querySelector('h1, h2') || document.createElement('h2');
+            heading.textContent = title;
+            
+            // Update content (simplified approach)
+            slideContent.innerHTML = `<${heading.tagName}>${title}</${heading.tagName}><p style="margin-top: 20px;">${content.replace(/\n/g, '</p><p>')}</p>`;
+            
+            alert('Slide saved successfully!');
+        }
+
+        function addNewSlide() {
+            const newSlide = document.createElement('div');
+            newSlide.className = 'slide';
+            newSlide.setAttribute('data-speech-text', 'New slide content');
+            newSlide.innerHTML = `
+                <div class="slide-content">
+                    <h2>New Slide</h2>
+                    <p>Add your content here</p>
+                </div>
+            `;
+            
+            document.querySelector('.presentation-container').appendChild(newSlide);
+            const totalSlidesElem = document.getElementById('total-slides');
+            totalSlidesElem.textContent = document.querySelectorAll('.slide').length;
+            alert('New slide added! Navigate to it with the Next button.');
+        }
+
+        function deleteCurrentSlide() {
+            if (confirm('Are you sure you want to delete this slide?')) {
+                const slides = document.querySelectorAll('.slide');
+                if (slides.length > 1) {
+                    slides[currentSlide - 1].remove();
+                    document.getElementById('total-slides').textContent = document.querySelectorAll('.slide').length;
+                    if (currentSlide > document.querySelectorAll('.slide').length) {
+                        currentSlide--;
+                    }
+                    showSlide(currentSlide);
+                    alert('Slide deleted!');
+                } else {
+                    alert('Cannot delete the last slide!');
+                }
+            }
+        }
+
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
+            if (editMode) return; // Disable keyboard nav in edit mode
+            
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') previousSlide();
             if (e.key === ' ') {
